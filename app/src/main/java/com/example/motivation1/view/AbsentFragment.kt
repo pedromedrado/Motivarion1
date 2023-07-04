@@ -9,29 +9,29 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.motivation1.constants.DataBaseConstants
-import com.example.motivation1.databinding.FragmentAllGuestsBinding
+import com.example.motivation1.databinding.FragmentAbsentBinding
 import com.example.motivation1.view.adapter.GuestAdapter
 import com.example.motivation1.view.listener.OnGuestListener
 import com.example.motivation1.viewmodel.GuestViewModel
 
-class AllGuestFragment : Fragment() {
 
-    private var _binding: FragmentAllGuestsBinding? = null
+class AbsentFragment : Fragment() {
+
+    private var _binding: FragmentAbsentBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var viewModel: GuestViewModel
     private val adapter = GuestAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, b: Bundle?
-    ): View {
-        viewModel =
-            ViewModelProvider(this).get(GuestViewModel::class.java)
-        _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, b: Bundle?): View {
 
-        // layout
-        binding.recyclerGuests.layoutManager = LinearLayoutManager(context)
+        viewModel = ViewModelProvider(this).get(GuestViewModel::class.java)
+        _binding = FragmentAbsentBinding.inflate(inflater,container,false)
+
+        binding.recyclerAbsents.layoutManager = LinearLayoutManager(context)
         //adpater
-        binding.recyclerGuests.adapter = adapter
+        binding.recyclerAbsents.adapter = adapter
+
 
         val listener = object : OnGuestListener {
 
@@ -46,7 +46,7 @@ class AllGuestFragment : Fragment() {
 
             override fun onDelete(id: Int) {
                 viewModel.delete(id)
-                viewModel.getAll()
+                viewModel.getAbsent()
             }
 
         }
@@ -55,14 +55,15 @@ class AllGuestFragment : Fragment() {
 
 
         observe()
+
         return binding.root
     }
 
+
     override fun onResume() {
         super.onResume()
-        viewModel.getAll()
+        viewModel.getAbsent()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -73,5 +74,4 @@ class AllGuestFragment : Fragment() {
             adapter.updateGuests(it)
         }
     }
-
 }

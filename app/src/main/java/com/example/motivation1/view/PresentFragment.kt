@@ -9,29 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.motivation1.constants.DataBaseConstants
-import com.example.motivation1.databinding.FragmentAllGuestsBinding
+import com.example.motivation1.databinding.FragmentPresentBinding
 import com.example.motivation1.view.adapter.GuestAdapter
 import com.example.motivation1.view.listener.OnGuestListener
 import com.example.motivation1.viewmodel.GuestViewModel
 
-class AllGuestFragment : Fragment() {
+class PresentFragment : Fragment() {
 
-    private var _binding: FragmentAllGuestsBinding? = null
+    private var _binding: FragmentPresentBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: GuestViewModel
     private val adapter = GuestAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, b: Bundle?
-    ): View {
-        viewModel =
-            ViewModelProvider(this).get(GuestViewModel::class.java)
-        _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, b: Bundle?): View {
 
-        // layout
-        binding.recyclerGuests.layoutManager = LinearLayoutManager(context)
+         viewModel = ViewModelProvider(this).get(GuestViewModel::class.java)
+        _binding = FragmentPresentBinding.inflate(inflater, container, false)
+
+
+        binding.recyclerPresent.layoutManager = LinearLayoutManager(context)
         //adpater
-        binding.recyclerGuests.adapter = adapter
+        binding.recyclerPresent.adapter = adapter
 
         val listener = object : OnGuestListener {
 
@@ -46,7 +44,7 @@ class AllGuestFragment : Fragment() {
 
             override fun onDelete(id: Int) {
                 viewModel.delete(id)
-                viewModel.getAll()
+                viewModel.getPresent()
             }
 
         }
@@ -55,23 +53,21 @@ class AllGuestFragment : Fragment() {
 
 
         observe()
+
         return binding.root
     }
-
     override fun onResume() {
         super.onResume()
-        viewModel.getAll()
+        viewModel.getPresent()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
     private fun observe() {
         viewModel.guest.observe(viewLifecycleOwner) {
             adapter.updateGuests(it)
         }
     }
-
 }
