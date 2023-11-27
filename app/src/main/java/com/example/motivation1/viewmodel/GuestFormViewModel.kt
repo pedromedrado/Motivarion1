@@ -12,7 +12,7 @@ import com.example.motivation1.repository.GuestRepository
 
 class GuestFormViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = GuestRepository.getInstance(application)
+    private val repository = GuestRepository(application)
 
     private val guestModel = MutableLiveData<GuestModel>()
     val guest: LiveData<GuestModel> = guestModel
@@ -32,9 +32,6 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
             sucessFailure.sucess = repository.update(guest)
         }
     }
-
-
-
 
 fun get(id: Int) {
     guestModel.value = repository.get(id)
